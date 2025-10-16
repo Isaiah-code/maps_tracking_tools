@@ -345,7 +345,7 @@ void main() {
         polyCoordinates: polyline,
       );
 
-      expect(result.$1, false); // callGoogle should be false
+      expect(result.recalculate, false); // callGoogle should be false
     });
 
     testWidgets('returns false when at end of polyline',
@@ -376,7 +376,7 @@ void main() {
         polyCoordinates: polyline,
       );
 
-      expect(result.$1, false);
+      expect(result.recalculate, false);
     });
 
     testWidgets('returns true when deviation exceeds threshold',
@@ -409,7 +409,7 @@ void main() {
         polyCoordinates: polyline,
       );
 
-      expect(result.$1, isA<bool>());
+      expect(result.recalculate, isA<bool>());
     });
   });
 }
