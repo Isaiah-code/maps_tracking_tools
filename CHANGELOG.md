@@ -5,6 +5,18 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.0.4] - 2025-10-16
+
+### Added
+- Comprehensive documentation for all model classes (`Northeast`, `Distance`, `Steps`, `Polylines`)
+- Detailed property-level documentation with examples and expected value ranges
+- Common maneuver types documentation for `Steps.maneuver` property
+- Cross-references between related model classes
+
+### Changed
+- Updated `reCallDirectionsApi` return type to use tuple syntax for improved type safety and clarity
+- Enhanced model documentation with real-world usage examples
+
 ## [0.0.3] - 2025-10-16
 
 ### Added
