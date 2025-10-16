@@ -141,10 +141,11 @@ class MapsTrackingTools {
   ///   await fetchNewRoute();
   /// }
   /// ```
-  Future<(bool, List<LatLng>)> reCallDirectionsApi(
-      {required BuildContext context,
-      required Position riderLocation,
-      required List<LatLng> polyCoordinates}) async {
+  Future<({bool recalculate, List<LatLng> polyCoordinates})>
+      reCallDirectionsApi(
+          {required BuildContext context,
+          required Position riderLocation,
+          required List<LatLng> polyCoordinates}) async {
     bool callGoogle = false;
 
     final latLngPosition =
@@ -153,7 +154,7 @@ class MapsTrackingTools {
     if (polyCoordinates.length > 1) {
       for (int i = 0; i < polyCoordinates.length; i++) {
         if (i + 1 == polyCoordinates.length) {
-          return (false, polyCoordinates);
+          return (recalculate: false, polyCoordinates: polyCoordinates);
         }
         final distanceKm1 = double.parse(
             convertToKM(pickup: latLngPosition, dropOff: polyCoordinates[i]));
@@ -176,9 +177,11 @@ class MapsTrackingTools {
       }
     }
 
-    if (!context.mounted) return (false, polyCoordinates);
+    if (!context.mounted) {
+      return (recalculate: false, polyCoordinates: polyCoordinates);
+    }
 
-    return (callGoogle, polyCoordinates);
+    return (recalculate: callGoogle, polyCoordinates: polyCoordinates);
   }
 
   /// Updates the navigation steps list by removing steps that have been passed.
