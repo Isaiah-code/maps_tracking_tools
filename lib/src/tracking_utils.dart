@@ -29,11 +29,11 @@ class MapsTrackingTools{
 
   String convertToKM({required LatLng pickup, required LatLng dropOff}) {
     const radius = 6371; // Radius of the earth in km
-    final dLat = degToRad(pickup.latitude - dropOff.latitude); // degToRad below
-    final dLon = degToRad(pickup.longitude - dropOff.longitude);
+    final dLat = degToRad(degree: pickup.latitude - dropOff.latitude); // degToRad below
+    final dLon = degToRad(degree: pickup.longitude - dropOff.longitude);
     final a = sin(dLat / 2) * sin(dLat / 2) +
-        cos(degToRad(dropOff.latitude)) *
-            cos(degToRad(pickup.latitude)) *
+        cos(degToRad(degree: dropOff.latitude)) *
+            cos(degToRad(degree: pickup.latitude)) *
             sin(dLon / 2) *
             sin(dLon / 2);
     final c = 2 * atan2(sqrt(a), sqrt(1 - a));
@@ -44,8 +44,8 @@ class MapsTrackingTools{
 
 //degree to radians
 
-  double degToRad(deg) {
-    return (deg * pi) / 180;
+  double degToRad({required double degree}) {
+    return (degree * pi) / 180;
   }
 
   Future<(bool, List<LatLng>)> reCallDirectionsApi(

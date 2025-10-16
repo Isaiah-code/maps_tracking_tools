@@ -16,23 +16,23 @@ void main() {
 
   group('degToRad', () {
     test('converts 0 degrees to 0 radians', () {
-      expect(mapsTools.degToRad(0), 0);
+      expect(mapsTools.degToRad(degree: 0), 0);
     });
 
     test('converts 180 degrees to PI radians', () {
-      expect(mapsTools.degToRad(180), closeTo(3.14159, 0.00001));
+      expect(mapsTools.degToRad(degree: 180), closeTo(3.14159, 0.00001));
     });
 
     test('converts 90 degrees to PI/2 radians', () {
-      expect(mapsTools.degToRad(90), closeTo(1.5708, 0.0001));
+      expect(mapsTools.degToRad(degree: 90), closeTo(1.5708, 0.0001));
     });
 
     test('converts 360 degrees to 2*PI radians', () {
-      expect(mapsTools.degToRad(360), closeTo(6.28318, 0.00001));
+      expect(mapsTools.degToRad(degree: 360), closeTo(6.28318, 0.00001));
     });
 
     test('handles negative degrees', () {
-      expect(mapsTools.degToRad(-90), closeTo(-1.5708, 0.0001));
+      expect(mapsTools.degToRad(degree: -90), closeTo(-1.5708, 0.0001));
     });
   });
 
