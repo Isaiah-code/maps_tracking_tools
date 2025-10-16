@@ -8,10 +8,44 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:location/location.dart';
 import 'package:maps_tracking_toolbox/models/direction_object.dart';
 
+/// A collection of utility functions for real-time location tracking,
+/// distance calculations, and route management in maps-based applications.
+///
+/// This class provides tools for:
+/// - Calculating distances between geographic coordinates
+/// - Detecting route deviations
+/// - Managing navigation steps
+/// - Normalizing compass headings
 class MapsTrackingTools {
+  /// Creates a [MapsTrackingTools] instance.
+  ///
+  /// The constructor parameter is currently unused but reserved for future extensions.
   const MapsTrackingTools();
 
-//get distance between rider and user
+  /// Calculates the distance between the current location and a destination endpoint.
+  ///
+  /// Uses the Haversine formula to calculate the great-circle distance between
+  /// two points on Earth specified in decimal degrees.
+  ///
+  /// **Parameters:**
+  /// - [currentLocation]: The rider's or user's current location
+  /// - [endPoint]: The destination coordinates
+  ///
+  /// **Returns:** The distance in kilometers as a double
+  ///
+  /// **Example:**
+  /// ```dart
+  /// final currentLocation = LocationData.fromMap({
+  ///   'latitude': 5.6037,
+  ///   'longitude': -0.1870,
+  /// });
+  /// final endpoint = LatLng(6.6885, -1.6244);
+  /// final distance = await mapsTools.getDistanceFromLatLonInKm(
+  ///   currentLocation: currentLocation,
+  ///   endPoint: endpoint,
+  /// );
+  /// print('Distance: $distance km');
+  ///
   Future<double> getDistanceFromLatLonInKm({
     required LocationData currentLocation,
     required LatLng endPoint,
@@ -25,6 +59,25 @@ class MapsTrackingTools {
     return double.parse(stringgyDistance);
   }
 
+  /// Calculates the distance between two geographic coordinates using the Haversine formula.
+  ///
+  /// The Haversine formula determines the great-circle distance between two points
+  /// on a sphere given their longitudes and latitudes.
+  ///
+  /// **Parameters:**
+  /// - [pickup]: Starting coordinate (latitude, longitude)
+  /// - [dropOff]: Ending coordinate (latitude, longitude)
+  ///
+  /// **Returns:** String representation of distance in kilometers with 2 decimal places
+  ///
+  /// **Example:**
+  /// ```dart
+  /// final distance = mapsTools.convertToKM(
+  ///   pickup: LatLng(5.6037, -0.1870),  // Accra
+  ///   dropOff: LatLng(6.6885, -1.6244), // Kumasi
+  /// );
+  /// print(distance); // "200.45"
+  /// ```
   String convertToKM({required LatLng pickup, required LatLng dropOff}) {
     const radius = 6371; // Radius of the earth in km
     final dLat =
@@ -41,12 +94,53 @@ class MapsTrackingTools {
     return distance.toStringAsFixed(2);
   }
 
-//degree to radians
-
+  /// Converts an angle from degrees to radians.
+  ///
+  /// **Parameters:**
+  /// - [deg]: Angle in degrees (can be positive or negative)
+  ///
+  /// **Returns:** Angle in radians as a double
+  ///
+  /// **Example:**
+  /// ```dart
+  /// final radians = mapsTools.degToRad(180);
+  /// print(radians); // 3.14159... (π)
+  /// ```
   double degToRad({required double degree}) {
     return (degree * pi) / 180;
   }
 
+  /// Detects if a rider has deviated from the planned route and determines
+  /// if the Directions API should be called again for route recalculation.
+  ///
+  /// The function checks if the rider is moving away from the route by comparing
+  /// distances to consecutive polyline points. If deviation exceeds 50 meters (0.05 km),
+  /// it signals that a new route should be calculated.
+  ///
+  /// **Parameters:**
+  /// - [context]: Flutter BuildContext for checking if widget is still mounted
+  /// - [riderLocation]: Current position of the rider
+  /// - [polyCoordinates]: List of coordinates representing the planned route
+  ///
+  /// **Returns:** A tuple containing:
+  ///   - `bool`: Whether to recalculate the route (true if deviation detected)
+  ///   - `List<LatLng>`: Updated polyline coordinates with passed points removed
+  ///
+  /// **Deviation threshold:** 0.05 km (50 meters)
+  ///
+  /// **Example:**
+  /// ```dart
+  /// final (shouldRecall, updatedPoly) = await mapsTools.reCallDirectionsApi(
+  ///   context: context,
+  ///   riderLocation: currentPosition,
+  ///   polyCoordinates: routePolyline,
+  /// );
+  ///
+  /// if (shouldRecall) {
+  ///   // Fetch new directions from Google Maps API
+  ///   await fetchNewRoute();
+  /// }
+  /// ```
   Future<(bool, List<LatLng>)> reCallDirectionsApi(
       {required BuildContext context,
       required Position riderLocation,
@@ -87,8 +181,27 @@ class MapsTrackingTools {
     return (callGoogle, polyCoordinates);
   }
 
-//UPDATE STEPS IF NEEDED
-
+  /// Updates the navigation steps list by removing steps that have been passed.
+  ///
+  /// Compares step end locations with the current polyline coordinates.
+  /// If a step's end location is no longer in the polyline, that step is removed.
+  ///
+  /// **Parameters:**
+  /// - [currentSteps]: List of navigation steps to check
+  /// - [currentPolyline]: Current route polyline coordinates
+  ///
+  /// **Returns:** Updated list of [Steps] with passed steps removed
+  ///
+  /// **Note:** Coordinates are compared with 5 decimal place precision
+  ///
+  /// **Example:**
+  /// ```dart
+  /// final updatedSteps = mapsTools.updateStepsIfNeeded(
+  ///   currentSteps: navigationSteps,
+  ///   currentPolyline: routePolyline,
+  /// );
+  /// // updatedSteps now only contains upcoming steps
+  /// ```
   List<Steps> updateStepsIfNeeded(
       {required List<Steps> currentSteps,
       required List<LatLng> currentPolyline}) {
@@ -112,7 +225,23 @@ class MapsTrackingTools {
     return currentSteps;
   }
 
-//UPDATE DISTANCE
+  /// Calculates the remaining distance from the rider's current position
+  /// to the end of the active navigation step.
+  ///
+  /// **Parameters:**
+  /// - [currentStep]: The active navigation step
+  /// - [riderLocation]: Rider's current position
+  ///
+  /// **Returns:** Distance in kilometers as a double
+  ///
+  /// **Example:**
+  /// ```dart
+  /// final distanceToTurn = mapsTools.updateDistanceOnActiveStep(
+  ///   currentStep: activeStep,
+  ///   riderLocation: riderPosition,
+  /// );
+  /// print('In $distanceToTurn km, turn right');
+  /// ```
   double updateDistanceOnActiveStep(
       {required Steps currentStep, required Position riderLocation}) {
     return double.parse(convertToKM(
@@ -121,6 +250,24 @@ class MapsTrackingTools {
             currentStep.endLocation!.lat!, currentStep.endLocation!.lng!)));
   }
 
+  /// Normalizes a compass heading to the standard 0-359 degree range.
+  ///
+  /// Converts negative heading values to their positive equivalent by adding 360.
+  /// This is useful when working with compass sensors that may return negative values.
+  ///
+  /// **Parameters:**
+  /// - [heading]: Compass heading in degrees (can be negative)
+  ///
+  /// **Returns:** Normalized heading in the range 0-359 degrees
+  ///
+  /// **Example:**
+  /// ```dart
+  /// final normalized = mapsTools.returnHeading(-90);
+  /// print(normalized); // 270
+  ///
+  /// final alreadyPositive = mapsTools.returnHeading(180);
+  /// print(alreadyPositive); // 180
+  /// ```
   int returnHeading(int heading) {
     if (heading < 0) {
       return heading + 360;
