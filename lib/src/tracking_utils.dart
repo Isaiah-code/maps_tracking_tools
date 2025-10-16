@@ -8,10 +8,8 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:location/location.dart';
 import 'package:maps_tracking_toolbox/models/direction_object.dart';
 
-class MapsTrackingTools{
-
+class MapsTrackingTools {
   const MapsTrackingTools();
-
 
 //get distance between rider and user
   Future<double> getDistanceFromLatLonInKm({
@@ -20,7 +18,7 @@ class MapsTrackingTools{
   }) async {
     final stringgyDistance = convertToKM(
       pickup:
-      LatLng(currentLocation.latitude ?? 0, currentLocation.longitude ?? 0),
+          LatLng(currentLocation.latitude ?? 0, currentLocation.longitude ?? 0),
       dropOff: endPoint,
     );
 
@@ -29,7 +27,8 @@ class MapsTrackingTools{
 
   String convertToKM({required LatLng pickup, required LatLng dropOff}) {
     const radius = 6371; // Radius of the earth in km
-    final dLat = degToRad(degree: pickup.latitude - dropOff.latitude); // degToRad below
+    final dLat =
+        degToRad(degree: pickup.latitude - dropOff.latitude); // degToRad below
     final dLon = degToRad(degree: pickup.longitude - dropOff.longitude);
     final a = sin(dLat / 2) * sin(dLat / 2) +
         cos(degToRad(degree: dropOff.latitude)) *
@@ -49,11 +48,13 @@ class MapsTrackingTools{
   }
 
   Future<(bool, List<LatLng>)> reCallDirectionsApi(
-      {required BuildContext context, required Position riderLocation, required List<LatLng> polyCoordinates}) async {
+      {required BuildContext context,
+      required Position riderLocation,
+      required List<LatLng> polyCoordinates}) async {
     bool callGoogle = false;
 
     final latLngPosition =
-    LatLng(riderLocation.latitude, riderLocation.longitude);
+        LatLng(riderLocation.latitude, riderLocation.longitude);
 
     if (polyCoordinates.length > 1) {
       for (int i = 0; i < polyCoordinates.length; i++) {
@@ -90,8 +91,7 @@ class MapsTrackingTools{
 
   List<Steps> updateStepsIfNeeded(
       {required List<Steps> currentSteps,
-        required List<LatLng> currentPolyline}) {
-
+      required List<LatLng> currentPolyline}) {
     List<Steps> holderSteps = currentSteps;
 
     if (currentSteps.isEmpty) {
@@ -128,6 +128,4 @@ class MapsTrackingTools{
 
     return heading;
   }
-
 }
-

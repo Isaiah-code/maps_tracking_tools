@@ -1,6 +1,5 @@
 library;
 
-
 class DirectionsObject {
   List<Routes>? routes;
   String? status;
@@ -15,8 +14,8 @@ class GeocodedWaypoints {
 
   GeocodedWaypoints(
       {required this.geocoderStatus,
-        required this.placeId,
-        required this.types});
+      required this.placeId,
+      required this.types});
 }
 
 class Routes {
@@ -88,13 +87,13 @@ class Steps {
 
   Steps(
       {required this.distance,
-        required this.duration,
-        required this.endLocation,
-        required this.htmlInstructions,
-        required this.polyline,
-        required this.startLocation,
-        required this.travelMode,
-        required this.maneuver});
+      required this.duration,
+      required this.endLocation,
+      required this.htmlInstructions,
+      required this.polyline,
+      required this.startLocation,
+      required this.travelMode,
+      required this.maneuver});
 }
 
 class Polylines {

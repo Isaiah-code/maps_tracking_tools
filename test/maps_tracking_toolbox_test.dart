@@ -5,8 +5,6 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:maps_tracking_toolbox/maps_tracking_toolbox.dart';
 
-
-
 void main() {
   late MapsTrackingTools mapsTools;
 
@@ -226,7 +224,6 @@ void main() {
 
       expect(distance, 0.0);
     });
-
   });
 
   group('updateStepsIfNeeded', () {
@@ -324,95 +321,95 @@ void main() {
 
   group('reCallDirectionsApi', () {
     testWidgets('returns false when polyline has only 1 point',
-            (WidgetTester tester) async {
-          await tester.pumpWidget(MaterialApp(home: Container()));
-          final context = tester.element(find.byType(Container));
+        (WidgetTester tester) async {
+      await tester.pumpWidget(MaterialApp(home: Container()));
+      final context = tester.element(find.byType(Container));
 
-          final riderLocation = Position(
-            latitude: 5.6037,
-            longitude: -0.1870,
-            timestamp: DateTime.now(),
-            accuracy: 0,
-            altitude: 0,
-            altitudeAccuracy: 0,
-            heading: 0,
-            headingAccuracy: 0,
-            speed: 0,
-            speedAccuracy: 0,
-          );
-          final polyline = [const LatLng(5.6037, -0.1870)];
+      final riderLocation = Position(
+        latitude: 5.6037,
+        longitude: -0.1870,
+        timestamp: DateTime.now(),
+        accuracy: 0,
+        altitude: 0,
+        altitudeAccuracy: 0,
+        heading: 0,
+        headingAccuracy: 0,
+        speed: 0,
+        speedAccuracy: 0,
+      );
+      final polyline = [const LatLng(5.6037, -0.1870)];
 
-          final result = await mapsTools.reCallDirectionsApi(
-            context: context,
-            riderLocation: riderLocation,
-            polyCoordinates: polyline,
-          );
+      final result = await mapsTools.reCallDirectionsApi(
+        context: context,
+        riderLocation: riderLocation,
+        polyCoordinates: polyline,
+      );
 
-          expect(result.$1, false); // callGoogle should be false
-        });
+      expect(result.$1, false); // callGoogle should be false
+    });
 
     testWidgets('returns false when at end of polyline',
-            (WidgetTester tester) async {
-          await tester.pumpWidget(MaterialApp(home: Container()));
-          final context = tester.element(find.byType(Container));
+        (WidgetTester tester) async {
+      await tester.pumpWidget(MaterialApp(home: Container()));
+      final context = tester.element(find.byType(Container));
 
-          final riderLocation = Position(
-            latitude: 5.6037,
-            longitude: -0.1870,
-            timestamp: DateTime.now(),
-            accuracy: 0,
-            altitude: 0,
-            altitudeAccuracy: 0,
-            heading: 0,
-            headingAccuracy: 0,
-            speed: 0,
-            speedAccuracy: 0,
-          );
-          final polyline = [
-            const LatLng(5.6000, -0.1800),
-            const LatLng(5.6037, -0.1870),
-          ];
+      final riderLocation = Position(
+        latitude: 5.6037,
+        longitude: -0.1870,
+        timestamp: DateTime.now(),
+        accuracy: 0,
+        altitude: 0,
+        altitudeAccuracy: 0,
+        heading: 0,
+        headingAccuracy: 0,
+        speed: 0,
+        speedAccuracy: 0,
+      );
+      final polyline = [
+        const LatLng(5.6000, -0.1800),
+        const LatLng(5.6037, -0.1870),
+      ];
 
-          final result = await mapsTools.reCallDirectionsApi(
-            context: context,
-            riderLocation: riderLocation,
-            polyCoordinates: polyline,
-          );
+      final result = await mapsTools.reCallDirectionsApi(
+        context: context,
+        riderLocation: riderLocation,
+        polyCoordinates: polyline,
+      );
 
-          expect(result.$1, false);
-        });
+      expect(result.$1, false);
+    });
 
     testWidgets('returns true when deviation exceeds threshold',
-            (WidgetTester tester) async {
-          await tester.pumpWidget(MaterialApp(home: Container()));
-          final context = tester.element(find.byType(Container));
+        (WidgetTester tester) async {
+      await tester.pumpWidget(MaterialApp(home: Container()));
+      final context = tester.element(find.byType(Container));
 
-          // Rider location far from polyline
-          final riderLocation = Position(
-            latitude: 6.0000,
-            longitude: -1.0000,
-            timestamp: DateTime.now(),
-            accuracy: 0,
-            altitude: 0,
-            altitudeAccuracy: 0,
-            heading: 0,
-            headingAccuracy: 0,
-            speed: 0,
-            speedAccuracy: 0,
-          );
-          final polyline = [
-            const LatLng(5.6000, -0.1800),
-            const LatLng(5.6037, -0.1870),
-            const LatLng(5.6100, -0.1900),
-          ];
+      // Rider location far from polyline
+      final riderLocation = Position(
+        latitude: 6.0000,
+        longitude: -1.0000,
+        timestamp: DateTime.now(),
+        accuracy: 0,
+        altitude: 0,
+        altitudeAccuracy: 0,
+        heading: 0,
+        headingAccuracy: 0,
+        speed: 0,
+        speedAccuracy: 0,
+      );
+      final polyline = [
+        const LatLng(5.6000, -0.1800),
+        const LatLng(5.6037, -0.1870),
+        const LatLng(5.6100, -0.1900),
+      ];
 
-          final result = await mapsTools.reCallDirectionsApi(
-            context: context,
-            riderLocation: riderLocation,
-            polyCoordinates: polyline,
-          );
+      final result = await mapsTools.reCallDirectionsApi(
+        context: context,
+        riderLocation: riderLocation,
+        polyCoordinates: polyline,
+      );
 
-          expect(result.$1, isA<bool>());
-        });
+      expect(result.$1, isA<bool>());
+    });
   });
 }
