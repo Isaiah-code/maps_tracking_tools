@@ -5,6 +5,19 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.0.3] - 2025-10-16
+
+### Added
+- Comprehensive code documentation for all public methods
+- Detailed doc comments with parameter descriptions and return types
+- Practical usage examples for each function
+- Special notes on deviation thresholds and precision values
+- Class-level documentation explaining core features
+
+### Changed
+- Improved developer experience with IDE hover tooltip support
+- Enhanced pub.dev documentation scoring with complete API documentation
+
 ## [0.0.2] - 2025-10-16
 
 ### Changed
