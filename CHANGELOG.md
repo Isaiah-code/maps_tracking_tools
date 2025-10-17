@@ -5,6 +5,25 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.0.5] - 2025-10-17
+
+### Added
+- Complete example app demonstrating all package features
+- Interactive UI with 6 example demonstrations:
+    - Distance calculation between coordinates (Accra to Kumasi)
+    - Degree to radian conversion
+    - Compass heading normalization
+    - Current location distance calculation with real device GPS
+    - Route deviation detection simulation
+    - Navigation step distance tracking
+- Example app README with setup instructions for Android and iOS
+- Location permission handling in example app
+- Loading states and error handling in example UI
+- Informative result display card with detailed output
+
+### Changed
+- Enhanced developer onboarding with working code samples
+
 ## [0.0.4] - 2025-10-16
 
 ### Added

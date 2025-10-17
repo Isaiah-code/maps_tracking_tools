@@ -50,13 +50,13 @@ class MapsTrackingTools {
     required LocationData currentLocation,
     required LatLng endPoint,
   }) async {
-    final stringgyDistance = convertToKM(
+    final distanceInString = convertToKM(
       pickup:
           LatLng(currentLocation.latitude ?? 0, currentLocation.longitude ?? 0),
       dropOff: endPoint,
     );
 
-    return double.parse(stringgyDistance);
+    return double.parse(distanceInString);
   }
 
   /// Calculates the distance between two geographic coordinates using the Haversine formula.
@@ -146,7 +146,7 @@ class MapsTrackingTools {
           {required BuildContext context,
           required Position riderLocation,
           required List<LatLng> polyCoordinates}) async {
-    bool callGoogle = false;
+    bool reCalculate = false;
 
     final latLngPosition =
         LatLng(riderLocation.latitude, riderLocation.longitude);
@@ -162,14 +162,12 @@ class MapsTrackingTools {
             pickup: latLngPosition, dropOff: polyCoordinates[i + 1]));
 
         if (distanceKm1 > distanceKm2) {
-          //meaning he is on the right path
-
+          //on right path
           polyCoordinates.removeRange(i, i + 1);
         } else {
           //there is a deviation. check for upward adjustment
-
           if (distanceKm1 > 0.05) {
-            callGoogle = true;
+            reCalculate = true;
           } else {
             break;
           }
@@ -181,7 +179,7 @@ class MapsTrackingTools {
       return (recalculate: false, polyCoordinates: polyCoordinates);
     }
 
-    return (recalculate: callGoogle, polyCoordinates: polyCoordinates);
+    return (recalculate: reCalculate, polyCoordinates: polyCoordinates);
   }
 
   /// Updates the navigation steps list by removing steps that have been passed.
@@ -208,20 +206,21 @@ class MapsTrackingTools {
   List<Steps> updateStepsIfNeeded(
       {required List<Steps> currentSteps,
       required List<LatLng> currentPolyline}) {
-    List<Steps> holderSteps = currentSteps;
+    List<Steps> currentStepsCopy = currentSteps;
 
-    if (currentSteps.isEmpty) {
-      return currentSteps;
-    }
+    if (currentSteps.isEmpty) return currentSteps;
 
-    for (var step in holderSteps) {
-      if (currentPolyline.contains(LatLng(
-          double.parse(step.endLocation!.lat!.toStringAsFixed(5)),
-          double.parse(step.endLocation!.lng!.toStringAsFixed(5))))) {
-        return currentSteps;
+    for (var step in currentStepsCopy) {
+      final stepLatLng = LatLng(
+        double.parse(step.endLocation!.lat!.toStringAsFixed(5)),
+        double.parse(step.endLocation!.lng!.toStringAsFixed(5)),
+      );
+
+      if (currentPolyline.contains(stepLatLng)) {
+        break;
       } else {
         currentSteps.remove(step);
-        return currentSteps;
+        break;
       }
     }
 
@@ -237,7 +236,7 @@ class MapsTrackingTools {
   ///
   /// **Returns:** Distance in kilometers as a double
   ///
-  /// **Example:**
+  /// **Example:**F
   /// ```dart
   /// final distanceToTurn = mapsTools.updateDistanceOnActiveStep(
   ///   currentStep: activeStep,
