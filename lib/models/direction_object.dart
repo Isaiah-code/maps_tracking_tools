@@ -1,4 +1,5 @@
 library;
+
 /// Represents a geographic coordinate with latitude and longitude.
 ///
 /// This class is commonly used to represent locations in navigation steps,

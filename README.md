@@ -16,7 +16,7 @@ Add this to your package's `pubspec.yaml` file:
 
 ```yaml
 dependencies:
-  maps_tracking_tools: ^0.1.0
+  maps_tracking_toolbox: ^0.0.5
 ```
 
 Then run:
@@ -30,7 +30,7 @@ flutter pub get
 ### Import the package
 
 ```dart
-import 'package:maps_tracking_tools/maps_tracking_tools.dart';
+import 'package:maps_tracking_toolbox/maps_tracking_toolbox.dart';
 ```
 
 ### Initialize the tools

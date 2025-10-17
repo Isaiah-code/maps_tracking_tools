@@ -152,12 +152,12 @@ class _ExampleHomePageState extends State<ExampleHomePage> {
                     SizedBox(height: 8),
                     Text(
                       'This example demonstrates the core features of the Maps Tracking Tools package:\n\n'
-                          '• Distance calculations using Haversine formula\n'
-                          '• Degree to radian conversion\n'
-                          '• Heading normalization\n'
-                          '• Location-based distance calculations\n'
-                          '• Route deviation detection\n'
-                          '• Navigation step distance tracking',
+                      '• Distance calculations using Haversine formula\n'
+                      '• Degree to radian conversion\n'
+                      '• Heading normalization\n'
+                      '• Location-based distance calculations\n'
+                      '• Route deviation detection\n'
+                      '• Navigation step distance tracking',
                       style: TextStyle(fontSize: 14),
                     ),
                   ],
@@ -298,7 +298,6 @@ class _ExampleHomePageState extends State<ExampleHomePage> {
       speed: 0,
       speedAccuracy: 0,
     );
-
 
     final directionInfo = await mapsTools.reCallDirectionsApi(
       context: context,
