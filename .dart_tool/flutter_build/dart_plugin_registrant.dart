@@ -10,7 +10,10 @@ import 'package:geolocator_android/geolocator_android.dart';
 import 'package:google_maps_flutter_android/google_maps_flutter_android.dart';
 import 'package:geolocator_apple/geolocator_apple.dart';
 import 'package:google_maps_flutter_ios/google_maps_flutter_ios.dart';
+import 'package:geolocator_linux/geolocator_linux.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 import 'package:geolocator_apple/geolocator_apple.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 
 @pragma('vm:entry-point')
 class _PluginRegistrant {
@@ -56,6 +59,24 @@ class _PluginRegistrant {
       }
 
     } else if (Platform.isLinux) {
+      try {
+        GeolocatorLinux.registerWith();
+      } catch (err) {
+        print(
+          '`geolocator_linux` threw an error: $err. '
+          'The app may not function as expected until you remove this plugin from pubspec.yaml'
+        );
+      }
+
+      try {
+        PackageInfoPlusLinuxPlugin.registerWith();
+      } catch (err) {
+        print(
+          '`package_info_plus` threw an error: $err. '
+          'The app may not function as expected until you remove this plugin from pubspec.yaml'
+        );
+      }
+
     } else if (Platform.isMacOS) {
       try {
         GeolocatorApple.registerWith();
@@ -67,6 +88,15 @@ class _PluginRegistrant {
       }
 
     } else if (Platform.isWindows) {
+      try {
+        PackageInfoPlusWindowsPlugin.registerWith();
+      } catch (err) {
+        print(
+          '`package_info_plus` threw an error: $err. '
+          'The app may not function as expected until you remove this plugin from pubspec.yaml'
+        );
+      }
+
     }
   }
 }

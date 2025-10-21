@@ -1,6 +1,6 @@
 name: maps_tracking_toolbox
 description: "A Flutter package providing utility functions for real-time location tracking, distance calculations, and route management for maps-based applications."
-version: 0.0.6
+version: 0.0.7
 homepage: "https://github.com/isaiah-code/maps_tracking_tools"
 
 environment:
@@ -10,9 +10,9 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  geolocator: ^12.0.0
-  google_maps_flutter: ^2.10.1
-  location: ^7.0.1
+  geolocator: ^14.0.2
+  google_maps_flutter: ^2.13.1
+  location: ^8.0.1
 
 dev_dependencies:
   flutter_test:
