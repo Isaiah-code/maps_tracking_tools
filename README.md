@@ -82,7 +82,7 @@ print(heading);  // 270
 ```dart
 import 'package:geolocator/geolocator.dart';
 
-final riderLocation = await Geolocator.getCurrentPosition();
+final position = await Geolocator.getCurrentPosition();
 final polyCoordinates = [
   LatLng(5.6000, -0.1800),
   LatLng(5.6037, -0.1870),
@@ -91,8 +91,8 @@ final polyCoordinates = [
 
 final (shouldRecall, updatedPoly) = await mapsTools.reCallDirectionsApi(
   context: context,
-  riderLocation: riderLocation,
   polyCoordinates: polyCoordinates,
+  position: LatLng(position.latitude, position.longitude),
 );
 
 if (shouldRecall) {
@@ -133,6 +133,7 @@ print('Distance to next turn: $distanceToStep km');
 Calculates the distance between two geographic coordinates using the Haversine formula.
 
 **Parameters:**
+
 - `pickup` (LatLng) - Starting coordinate
 - `dropOff` (LatLng) - Ending coordinate
 
@@ -143,6 +144,7 @@ Calculates the distance between two geographic coordinates using the Haversine f
 Async wrapper for calculating distance from LocationData to LatLng.
 
 **Parameters:**
+
 - `currentLocation` (LocationData) - Current location from location package
 - `endPoint` (LatLng) - Destination coordinate
 
@@ -153,6 +155,7 @@ Async wrapper for calculating distance from LocationData to LatLng.
 Converts degrees to radians.
 
 **Parameters:**
+
 - `deg` (num) - Angle in degrees
 
 **Returns:** double - Angle in radians
@@ -162,6 +165,7 @@ Converts degrees to radians.
 Normalizes heading values to 0-359 range.
 
 **Parameters:**
+
 - `heading` (int) - Compass heading (can be negative)
 
 **Returns:** int - Normalized heading (0-359)
@@ -171,8 +175,9 @@ Normalizes heading values to 0-359 range.
 Detects if rider has deviated from route and determines if new directions are needed.
 
 **Parameters:**
+
 - `context` (BuildContext) - Flutter context
-- `riderLocation` (Position) - Current rider position
+- `position` (LatLng) - Current rider position
 - `polyCoordinates` (List<LatLng>) - Route polyline coordinates
 
 **Returns:** Future<(bool, List<LatLng>)> - Tuple of (shouldRecalculate, updatedPolyline)
@@ -182,6 +187,7 @@ Detects if rider has deviated from route and determines if new directions are ne
 Updates navigation steps based on current polyline.
 
 **Parameters:**
+
 - `currentSteps` (List<Steps>) - Current navigation steps
 - `currentPolyline` (List<LatLng>) - Current route polyline
 
@@ -192,6 +198,7 @@ Updates navigation steps based on current polyline.
 Calculates distance between rider and end of current navigation step.
 
 **Parameters:**
+
 - `currentStep` (Steps) - Current active navigation step
 - `riderLocation` (Position) - Rider's current position
 
@@ -200,10 +207,10 @@ Calculates distance between rider and end of current navigation step.
 ## Dependencies
 
 This package depends on:
+
 - `google_maps_flutter` - For LatLng coordinate handling
 - `location` - For LocationData
 - `geolocator` - For Position data
-
 
 ## Additional Information
 
@@ -214,7 +221,6 @@ Contributions are welcome! Please feel free to submit a Pull Request.
 ### Issues
 
 If you encounter any issues, please file them on the [GitHub issue tracker](https://github.com/isaiah-code/maps_tracking_tools/issues).
-
 
 ## Changelog
 

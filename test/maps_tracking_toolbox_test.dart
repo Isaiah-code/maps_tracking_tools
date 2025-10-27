@@ -325,23 +325,13 @@ void main() {
       await tester.pumpWidget(MaterialApp(home: Container()));
       final context = tester.element(find.byType(Container));
 
-      final riderLocation = Position(
-        latitude: 5.6037,
-        longitude: -0.1870,
-        timestamp: DateTime.now(),
-        accuracy: 0,
-        altitude: 0,
-        altitudeAccuracy: 0,
-        heading: 0,
-        headingAccuracy: 0,
-        speed: 0,
-        speedAccuracy: 0,
-      );
+      const position = LatLng(5.6037, -0.1870);
+
       final polyline = [const LatLng(5.6037, -0.1870)];
 
       final result = await mapsTools.reCallDirectionsApi(
         context: context,
-        riderLocation: riderLocation,
+        position: position,
         polyCoordinates: polyline,
       );
 
@@ -353,18 +343,7 @@ void main() {
       await tester.pumpWidget(MaterialApp(home: Container()));
       final context = tester.element(find.byType(Container));
 
-      final riderLocation = Position(
-        latitude: 5.6037,
-        longitude: -0.1870,
-        timestamp: DateTime.now(),
-        accuracy: 0,
-        altitude: 0,
-        altitudeAccuracy: 0,
-        heading: 0,
-        headingAccuracy: 0,
-        speed: 0,
-        speedAccuracy: 0,
-      );
+      const position = LatLng(5.6037, -0.1870);
       final polyline = [
         const LatLng(5.6000, -0.1800),
         const LatLng(5.6037, -0.1870),
@@ -372,7 +351,7 @@ void main() {
 
       final result = await mapsTools.reCallDirectionsApi(
         context: context,
-        riderLocation: riderLocation,
+        position: position,
         polyCoordinates: polyline,
       );
 
@@ -385,18 +364,7 @@ void main() {
       final context = tester.element(find.byType(Container));
 
       // Rider location far from polyline
-      final riderLocation = Position(
-        latitude: 6.0000,
-        longitude: -1.0000,
-        timestamp: DateTime.now(),
-        accuracy: 0,
-        altitude: 0,
-        altitudeAccuracy: 0,
-        heading: 0,
-        headingAccuracy: 0,
-        speed: 0,
-        speedAccuracy: 0,
-      );
+      const position = LatLng(6.0000, -1.0000);
       final polyline = [
         const LatLng(5.6000, -0.1800),
         const LatLng(5.6037, -0.1870),
@@ -405,7 +373,7 @@ void main() {
 
       final result = await mapsTools.reCallDirectionsApi(
         context: context,
-        riderLocation: riderLocation,
+        position: position,
         polyCoordinates: polyline,
       );
 
