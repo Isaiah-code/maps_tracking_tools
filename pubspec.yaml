@@ -1,6 +1,6 @@
 name: maps_tracking_toolbox
 description: "A Flutter package providing utility functions for real-time location tracking, distance calculations, and route management for maps-based applications."
-version: 0.0.8
+version: 1.0.0
 homepage: "https://github.com/isaiah-code/maps_tracking_tools"
 
 environment:

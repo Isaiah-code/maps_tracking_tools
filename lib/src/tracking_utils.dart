@@ -273,4 +273,126 @@ class MapsTrackingTools {
 
     return heading;
   }
+
+  /// Decodes an encoded polyline and adds precise start and end positions.
+  ///
+  /// This method is useful when you have more accurate start/end coordinates than
+  /// those encoded in the polyline. It decodes the polyline and then inserts
+  /// the precise positions at the beginning and end of the coordinate list.
+  ///
+  /// **Use case:** Google Maps API sometimes returns polylines with slightly
+  /// imprecise start/end points. If you have exact coordinates (e.g., from GPS),
+  /// use this method to ensure accuracy at route endpoints.
+  ///
+  /// **Parameters:**
+  /// - [encodedPolyline]: The encoded polyline string from Google Maps API
+  /// - [preciseStartPosition]: Exact starting coordinate (e.g., from GPS)
+  /// - [preciseEndPosition]: Exact ending coordinate (e.g., destination)
+  ///
+  /// **Returns:** List of [LatLng] coordinates with precise start/end positions
+  ///
+  /// **Example:**
+  /// ```dart
+  /// final polyline = 'encoded_polyline_from_api';
+  /// final startGPS = LatLng(5.6037, -0.1870); // Exact pickup location
+  /// final endGPS = LatLng(6.6885, -1.6244);   // Exact dropoff location
+  ///
+  /// final route = mapsTools.decodePolylineWithStartAndEndLocation(
+  ///   encodedPolyline: polyline,
+  ///   preciseStartPosition: startGPS,
+  ///   preciseEndPosition: endGPS,
+  /// );
+  ///
+  /// // route[0] is guaranteed to be startGPS
+  /// // route[route.length - 1] is guaranteed to be endGPS
+  /// ```
+  ///
+  /// **Note:** The original decoded points are preserved between the
+  /// precise start and end positions.
+  List<LatLng> decodePolylineWithStartAndEndLocation(
+      {required String encodedPolyline,
+      required LatLng preciseStartPosition,
+      required LatLng preciseEndPosition}) {
+    List<LatLng> polyCoordinates = decodePolyline(encoded: encodedPolyline);
+
+    polyCoordinates.insert(0, preciseStartPosition);
+
+    polyCoordinates.add(preciseEndPosition);
+
+    return polyCoordinates;
+  }
+
+  /// Decodes an encoded polyline string into a list of geographic coordinates.
+  ///
+  /// Uses Google's Polyline Encoding Algorithm to convert a compressed string
+  /// representation of a path into actual latitude/longitude coordinates.
+  /// This is the standard format returned by the Google Maps Directions API.
+  ///
+  /// **Algorithm:** The encoded string uses a variable-length encoding scheme
+  /// where each coordinate is represented as a difference from the previous point,
+  /// compressed using base-64 characters.
+  ///
+  /// **Parameters:**
+  /// - [encoded]: The encoded polyline string from Google Maps API
+  ///
+  /// **Returns:** List of [LatLng] coordinates representing the path
+  ///
+  /// **Example:**
+  /// ```dart
+  /// final encodedString = '_p~iF~ps|U_ulLnnqC_mqNvxq`@';
+  /// final points = MapsTrackingTools.decodePolyline(encoded: encodedString);
+  /// print('Decoded ${points.length} points');
+  /// // Each point is a LatLng coordinate
+  /// ```
+  ///
+  /// **Note:** This is a static method and can be called without instantiating the class:
+  /// ```dart
+  /// final points = MapsTrackingTools.decodePolyline(encoded: polylineString);
+  /// ```
+  ///
+  /// See: [Google's Polyline Encoding Algorithm](https://developers.google.com/maps/documentation/utilities/polylinealgorithm)
+  List<LatLng> decodePolyline({required String encoded}) {
+    List<LatLng> points = [];
+    int index = 0, len = encoded.length;
+    int lat = 0, lng = 0;
+    BigInt big0 = BigInt.from(0);
+    BigInt big0x1f = BigInt.from(0x1f);
+    BigInt big0x20 = BigInt.from(0x20);
+
+    while (index < len) {
+      int shift = 0;
+      BigInt b, result;
+      result = big0;
+      do {
+        b = BigInt.from(encoded.codeUnitAt(index++) - 63);
+        result |= (b & big0x1f) << shift;
+        shift += 5;
+      } while (b >= big0x20);
+
+      BigInt rShifted = result >> 1;
+
+      int dLat = result.isOdd ? (~rShifted).toInt() : rShifted.toInt();
+
+      lat += dLat;
+
+      shift = 0;
+
+      result = big0;
+      do {
+        b = BigInt.from(encoded.codeUnitAt(index++) - 63);
+        result |= (b & big0x1f) << shift;
+        shift += 5;
+      } while (b >= big0x20);
+
+      rShifted = result >> 1;
+
+      int dLng = result.isOdd ? (~rShifted).toInt() : rShifted.toInt();
+
+      lng += dLng;
+
+      points.add(LatLng((lat / 1E5).toDouble(), (lng / 1E5).toDouble()));
+    }
+
+    return points;
+  }
 }

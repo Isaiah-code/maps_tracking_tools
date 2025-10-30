@@ -9,6 +9,8 @@ A Flutter package providing utility functions for real-time location tracking, d
 - 🧭 **Heading Normalization** - Convert and normalize compass headings
 - 🛣️ **Route Deviation Detection** - Detect when users deviate from planned routes
 - 📊 **Step Management** - Update and manage navigation steps based on current position
+- 🔓 **Polyline Decoding** - Decode Google Maps encoded polylines into coordinate lists
+
 
 ## Installation
 
@@ -16,7 +18,7 @@ Add this to your package's `pubspec.yaml` file:
 
 ```yaml
 dependencies:
-  maps_tracking_toolbox: ^0.0.8
+  maps_tracking_toolbox: ^1.0.0
 ```
 
 Then run:
@@ -127,6 +129,22 @@ final distanceToStep = mapsTools.updateDistanceOnActiveStep(
 );
 print('Distance to next turn: $distanceToStep km');
 ```
+### Decode encoded polyline
+
+```dart
+// Decode a polyline from Google Maps API
+final encodedPolyline = '_p~iF~ps|U_ulLnnqC_mqNvxq`@';
+final points = MapsTrackingTools.decodePolyline(encoded: encodedPolyline);
+print('Decoded ${points.length} coordinate points');
+
+// Decode with precise start and end positions
+final route = mapsTools.decodePolylineWithStartAndEndLocation(
+  encodedPolyline: encodedPolyline,
+  preciseStartPosition: LatLng(5.6037, -0.1870),
+  preciseEndPosition: LatLng(6.6885, -1.6244),
+);
+// First and last points are now your precise coordinates
+```
 
 ## API Reference
 
@@ -198,6 +216,28 @@ Calculates distance between current position and end of current navigation step.
 - `position` (LatLng) - Current position coordinates
 
 **Returns:** double - Distance in kilometers
+
+### `decodePolyline`
+
+Static method to decode Google Maps encoded polyline strings into coordinates.
+
+**Parameters:**
+- `encoded` (String) - Encoded polyline string from Google Maps API
+
+**Returns:** List<LatLng> - Decoded coordinate points
+
+**Note:** This is a static method - call it as `MapsTrackingTools.decodePolyline(...)`
+
+### `decodePolylineWithStartAndEndLocation`
+
+Decodes polyline and adds precise start and end positions for improved accuracy.
+
+**Parameters:**
+- `encodedPolyline` (String) - Encoded polyline string
+- `preciseStartPosition` (LatLng) - Exact starting coordinate
+- `preciseEndPosition` (LatLng) - Exact ending coordinate
+
+**Returns:** List<LatLng> - Decoded points with precise endpoints
 
 ## Dependencies
 
