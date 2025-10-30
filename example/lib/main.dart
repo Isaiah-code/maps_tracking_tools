@@ -286,22 +286,11 @@ class _ExampleHomePageState extends State<ExampleHomePage> {
     ];
 
     // Simulate rider location on route
-    final riderOnRoute = Position(
-      latitude: 5.6037,
-      longitude: -0.1870,
-      timestamp: DateTime.now(),
-      accuracy: 10,
-      altitude: 0,
-      altitudeAccuracy: 0,
-      heading: 0,
-      headingAccuracy: 0,
-      speed: 0,
-      speedAccuracy: 0,
-    );
+    const position = LatLng(5.6037, -0.1870);
 
     final directionInfo = await mapsTools.reCallDirectionsApi(
       context: context,
-      riderLocation: riderOnRoute,
+      position: position,
       polyCoordinates: List.from(polyline),
     );
 

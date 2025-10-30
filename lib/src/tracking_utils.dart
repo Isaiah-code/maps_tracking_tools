@@ -119,7 +119,7 @@ class MapsTrackingTools {
   ///
   /// **Parameters:**
   /// - [context]: Flutter BuildContext for checking if widget is still mounted
-  /// - [riderLocation]: Current position of the rider
+  /// - [position]: Current position of the rider
   /// - [polyCoordinates]: List of coordinates representing the planned route
   ///
   /// **Returns:** A tuple containing:
@@ -132,7 +132,7 @@ class MapsTrackingTools {
   /// ```dart
   /// final (shouldRecall, updatedPoly) = await mapsTools.reCallDirectionsApi(
   ///   context: context,
-  ///   riderLocation: currentPosition,
+  ///   position: currentPosition,
   ///   polyCoordinates: routePolyline,
   /// );
   ///
@@ -144,12 +144,9 @@ class MapsTrackingTools {
   Future<({bool recalculate, List<LatLng> polyCoordinates})>
       reCallDirectionsApi(
           {required BuildContext context,
-          required Position riderLocation,
+          required LatLng position,
           required List<LatLng> polyCoordinates}) async {
     bool reCalculate = false;
-
-    final latLngPosition =
-        LatLng(riderLocation.latitude, riderLocation.longitude);
 
     if (polyCoordinates.length > 1) {
       for (int i = 0; i < polyCoordinates.length; i++) {
@@ -157,9 +154,9 @@ class MapsTrackingTools {
           return (recalculate: false, polyCoordinates: polyCoordinates);
         }
         final distanceKm1 = double.parse(
-            convertToKM(pickup: latLngPosition, dropOff: polyCoordinates[i]));
-        final distanceKm2 = double.parse(convertToKM(
-            pickup: latLngPosition, dropOff: polyCoordinates[i + 1]));
+            convertToKM(pickup: position, dropOff: polyCoordinates[i]));
+        final distanceKm2 = double.parse(
+            convertToKM(pickup: position, dropOff: polyCoordinates[i + 1]));
 
         if (distanceKm1 > distanceKm2) {
           //on right path
