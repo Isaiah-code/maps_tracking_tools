@@ -82,7 +82,7 @@ print(heading);  // 270
 ```dart
 import 'package:geolocator/geolocator.dart';
 
-final riderLocation = await Geolocator.getCurrentPosition();
+final position = await Geolocator.getCurrentPosition();
 final polyCoordinates = [
   LatLng(5.6000, -0.1800),
   LatLng(5.6037, -0.1870),
@@ -91,8 +91,8 @@ final polyCoordinates = [
 
 final (shouldRecall, updatedPoly) = await mapsTools.reCallDirectionsApi(
   context: context,
-  riderLocation: riderLocation,
   polyCoordinates: polyCoordinates,
+  position: LatLng(position.latitude, position.longitude),
 );
 
 if (shouldRecall) {
@@ -172,7 +172,7 @@ Detects if rider has deviated from route and determines if new directions are ne
 
 **Parameters:**
 - `context` (BuildContext) - Flutter context
-- `riderLocation` (Position) - Current rider position
+- `position` (LatLng) - Current rider position
 - `polyCoordinates` (List<LatLng>) - Route polyline coordinates
 
 **Returns:** Future<(bool, List<LatLng>)> - Tuple of (shouldRecalculate, updatedPolyline)
