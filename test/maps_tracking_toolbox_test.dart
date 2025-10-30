@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:location/location.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:geolocator/geolocator.dart';
 import 'package:maps_tracking_toolbox/maps_tracking_toolbox.dart';
 
 void main() {
@@ -171,22 +170,11 @@ void main() {
         travelMode: 'DRIVING',
         maneuver: 'turn-right',
       );
-      final riderLocation = Position(
-        latitude: 5.6037,
-        longitude: -0.1870,
-        timestamp: DateTime.now(),
-        accuracy: 0,
-        altitude: 0,
-        altitudeAccuracy: 0,
-        heading: 0,
-        headingAccuracy: 0,
-        speed: 0,
-        speedAccuracy: 0,
-      );
+      const position = LatLng(5.6037, -0.1870);
 
       final distance = mapsTools.updateDistanceOnActiveStep(
         currentStep: currentStep,
-        riderLocation: riderLocation,
+        position: position,
       );
 
       expect(distance, isA<double>());
@@ -204,22 +192,11 @@ void main() {
         travelMode: 'DRIVING',
         maneuver: 'straight',
       );
-      final riderLocation = Position(
-        latitude: 5.6037,
-        longitude: -0.1870,
-        timestamp: DateTime.now(),
-        accuracy: 0,
-        altitude: 0,
-        altitudeAccuracy: 0,
-        heading: 0,
-        headingAccuracy: 0,
-        speed: 0,
-        speedAccuracy: 0,
-      );
+      const position = LatLng(5.6037, -0.1870);
 
       final distance = mapsTools.updateDistanceOnActiveStep(
         currentStep: currentStep,
-        riderLocation: riderLocation,
+        position: position,
       );
 
       expect(distance, 0.0);

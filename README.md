@@ -16,7 +16,7 @@ Add this to your package's `pubspec.yaml` file:
 
 ```yaml
 dependencies:
-  maps_tracking_toolbox: ^0.0.7
+  maps_tracking_toolbox: ^0.0.8
 ```
 
 Then run:
@@ -63,8 +63,8 @@ final currentLocation = LocationData.fromMap({
 });
 
 final distanceKm = await mapsTools.getDistanceFromLatLonInKm(
-  currentLocation: currentLocation,
-  endPoint: LatLng(6.6885, -1.6244),
+currentLocation: currentLocation,
+endPoint: LatLng(6.6885, -1.6244),
 );
 print('Distance: $distanceKm km');
 ```
@@ -82,7 +82,8 @@ print(heading);  // 270
 ```dart
 import 'package:geolocator/geolocator.dart';
 
-final position = await Geolocator.getCurrentPosition();
+final currentPosition = await Geolocator.getCurrentPosition();
+final position = LatLng(currentPosition.latitude, currentPosition.longitude);
 final polyCoordinates = [
   LatLng(5.6000, -0.1800),
   LatLng(5.6037, -0.1870),
@@ -91,8 +92,8 @@ final polyCoordinates = [
 
 final (shouldRecall, updatedPoly) = await mapsTools.reCallDirectionsApi(
   context: context,
+  position: position,
   polyCoordinates: polyCoordinates,
-  position: LatLng(position.latitude, position.longitude),
 );
 
 if (shouldRecall) {
@@ -117,11 +118,12 @@ final updatedSteps = mapsTools.updateStepsIfNeeded(
 
 ```dart
 final currentStep = Steps(...); // Your current navigation step
-final riderLocation = await Geolocator.getCurrentPosition();
+final currentPosition = await Geolocator.getCurrentPosition();
+final position = LatLng(currentPosition.latitude, currentPosition.longitude);
 
 final distanceToStep = mapsTools.updateDistanceOnActiveStep(
   currentStep: currentStep,
-  riderLocation: riderLocation,
+  position: position,
 );
 print('Distance to next turn: $distanceToStep km');
 ```
@@ -172,7 +174,7 @@ Detects if rider has deviated from route and determines if new directions are ne
 
 **Parameters:**
 - `context` (BuildContext) - Flutter context
-- `position` (LatLng) - Current rider position
+- `position` (LatLng) - Current position coordinates
 - `polyCoordinates` (List<LatLng>) - Route polyline coordinates
 
 **Returns:** Future<(bool, List<LatLng>)> - Tuple of (shouldRecalculate, updatedPolyline)
@@ -189,11 +191,11 @@ Updates navigation steps based on current polyline.
 
 ### `updateDistanceOnActiveStep`
 
-Calculates distance between rider and end of current navigation step.
+Calculates distance between current position and end of current navigation step.
 
 **Parameters:**
 - `currentStep` (Steps) - Current active navigation step
-- `riderLocation` (Position) - Rider's current position
+- `position` (LatLng) - Current position coordinates
 
 **Returns:** double - Distance in kilometers
 
@@ -203,7 +205,6 @@ This package depends on:
 - `google_maps_flutter` - For LatLng coordinate handling
 - `location` - For LocationData
 - `geolocator` - For Position data
-
 
 ## Additional Information
 

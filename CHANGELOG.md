@@ -5,6 +5,45 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.0.8] - 2025-10-30
+
+### Changed
+- **BREAKING CHANGE**: Updated function parameters from `Position` object to `LatLng` object for improved flexibility and consistency
+- **BREAKING CHANGE**: Renamed parameter `riderLocation` to `position` for more generic usage
+- Affected functions: `reCallDirectionsApi` and `updateDistanceOnActiveStep`
+- These changes allow easier integration with various location sources and simplify the API
+
+### Migration Guide
+If you're upgrading from 0.0.7 or earlier:
+
+**Before (0.0.7):**
+```dart
+final result = await mapsTools.reCallDirectionsApi(
+  context: context,
+  riderLocation: positionObject, // Position type
+  polyCoordinates: polyline,
+);
+
+final distance = mapsTools.updateDistanceOnActiveStep(
+  currentStep: step,
+  riderLocation: positionObject, // Position type
+);
+```
+
+**After (0.0.8):**
+```dart
+final result = await mapsTools.reCallDirectionsApi(
+  context: context,
+  position: LatLng(lat, lng), // LatLng type, renamed parameter
+  polyCoordinates: polyline,
+);
+
+final distance = mapsTools.updateDistanceOnActiveStep(
+  currentStep: step,
+  position: LatLng(lat, lng), // LatLng type, renamed parameter
+);
+```
+
 ## [0.0.7] - 2025-10-21
 
 ### Changed

@@ -285,7 +285,7 @@ class _ExampleHomePageState extends State<ExampleHomePage> {
       const LatLng(5.6150, -0.1950),
     ];
 
-    // Simulate rider location on route
+    // Simulate object location on route
     const position = LatLng(5.6037, -0.1870);
 
     final directionInfo = await mapsTools.reCallDirectionsApi(
@@ -299,7 +299,7 @@ class _ExampleHomePageState extends State<ExampleHomePage> {
           'Original polyline points: ${polyline.length}\n'
           'Updated polyline points: ${directionInfo.polyCoordinates.length}\n'
           'Should recalculate route: ${directionInfo.recalculate ? "Yes" : "No"}\n\n'
-          'Rider is ${directionInfo.recalculate ? "OFF" : "ON"} the planned route.\n\n'
+          'Object is ${directionInfo.recalculate ? "OFF" : "ON"} the planned route.\n\n'
           'Deviation threshold: 0.05 km (50 meters)';
       isLoading = false;
     });
@@ -322,23 +322,12 @@ class _ExampleHomePageState extends State<ExampleHomePage> {
       maneuver: 'turn-right',
     );
 
-    // Simulate rider location
-    final riderLocation = Position(
-      latitude: 5.6037,
-      longitude: -0.1870,
-      timestamp: DateTime.now(),
-      accuracy: 10,
-      altitude: 0,
-      altitudeAccuracy: 0,
-      heading: 0,
-      headingAccuracy: 0,
-      speed: 0,
-      speedAccuracy: 0,
-    );
+    // Simulate object location
+    const position = LatLng(5.6037, -0.1870);
 
     final distance = mapsTools.updateDistanceOnActiveStep(
       currentStep: step,
-      riderLocation: riderLocation,
+      position: position,
     );
 
     setState(() {

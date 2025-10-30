@@ -3,7 +3,6 @@ library;
 import 'dart:math';
 
 import 'package:flutter/material.dart';
-import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:location/location.dart';
 import 'package:maps_tracking_toolbox/models/direction_object.dart';
@@ -28,7 +27,7 @@ class MapsTrackingTools {
   /// two points on Earth specified in decimal degrees.
   ///
   /// **Parameters:**
-  /// - [currentLocation]: The rider's or user's current location
+  /// - [currentLocation]: The object's current location
   /// - [endPoint]: The destination coordinates
   ///
   /// **Returns:** The distance in kilometers as a double
@@ -110,16 +109,16 @@ class MapsTrackingTools {
     return (degree * pi) / 180;
   }
 
-  /// Detects if a rider has deviated from the planned route and determines
+  /// Detects if the object has deviated from the planned route and determines
   /// if the Directions API should be called again for route recalculation.
   ///
-  /// The function checks if the rider is moving away from the route by comparing
+  /// The function checks if the object is moving away from the route by comparing
   /// distances to consecutive polyline points. If deviation exceeds 50 meters (0.05 km),
   /// it signals that a new route should be calculated.
   ///
   /// **Parameters:**
   /// - [context]: Flutter BuildContext for checking if widget is still mounted
-  /// - [position]: Current position of the rider
+  /// - [position]: Current position of the object
   /// - [polyCoordinates]: List of coordinates representing the planned route
   ///
   /// **Returns:** A tuple containing:
@@ -224,12 +223,12 @@ class MapsTrackingTools {
     return currentSteps;
   }
 
-  /// Calculates the remaining distance from the rider's current position
+  /// Calculates the remaining distance from the object's current position
   /// to the end of the active navigation step.
   ///
   /// **Parameters:**
   /// - [currentStep]: The active navigation step
-  /// - [riderLocation]: Rider's current position
+  /// - [position]: Object's current position
   ///
   /// **Returns:** Distance in kilometers as a double
   ///
@@ -237,14 +236,14 @@ class MapsTrackingTools {
   /// ```dart
   /// final distanceToTurn = mapsTools.updateDistanceOnActiveStep(
   ///   currentStep: activeStep,
-  ///   riderLocation: riderPosition,
+  ///   position: object's position,
   /// );
   /// print('In $distanceToTurn km, turn right');
   /// ```
   double updateDistanceOnActiveStep(
-      {required Steps currentStep, required Position riderLocation}) {
+      {required Steps currentStep, required LatLng position}) {
     return double.parse(convertToKM(
-        pickup: LatLng(riderLocation.latitude, riderLocation.longitude),
+        pickup: LatLng(position.latitude, position.longitude),
         dropOff: LatLng(
             currentStep.endLocation!.lat!, currentStep.endLocation!.lng!)));
   }
